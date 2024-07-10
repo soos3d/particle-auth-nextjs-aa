@@ -3,7 +3,7 @@
     <img src="https://i.imgur.com/xmdzXU4.png" />
   </a>
   <h3>
- @particle-network/auth-core Demo Application 
+ @particle-network/auth-core @particle-network/aa Demo Application 
   </h3>
 </div>
 
@@ -11,7 +11,7 @@
 
 ⚡️ Basic demo application using `@particle-network/auth-core` and `@particle-network/aa` to initiate social login and send transactions via an account abstraction smart account. 
 
-This is a lower-level library and powers `@particle-network/auth-core-modal` - most additional functionality beyond the aforementioned (login and transaction execution) will need to be built by the developer implementing this library.
+This is a lower-level library that powers `@particle-network/auth-core-modal`. The developer implementing this library will need to build most additional functionality beyond the aforementioned (login and transaction execution).
 
 This app allows you to log in using social logins and interact with the Ethereum Sepolia and Base Sepolia testnets by displaying account information and sending a transfer transaction to an address you can input in the UI. The user can select to send a gasless transaction or pay gas with the native token.
 
@@ -19,7 +19,7 @@ It also showcases how to sign simple messages.
 
 > The Next application is within the `particle-auth-aa` directory.
 
-> 🛠️ Try the demo: [Particle Auth Next.js demo](https://particle-next-starter.vercel.app/)
+> 🛠️ Try the demo: [Particle Auth Next.js AA demo](https://particle-auth-nextjs-aa.vercel.app/)
 
 Built using:
 
@@ -40,9 +40,9 @@ Particle Auth Core, a component of Particle Network's Wallet-as-a-Service, enabl
 
 ## 🪪 Account Abstraction SDK
 
-Particle Network natively supports and facilitates end-to-end utilization of ERC-4337 account abstraction. This is primarily done through the account abstraction SDK, capable of constructing, sponsoring, and sending UserOperations, alongside deploying smart accounts, retrieving fee quotes, and other key functions.
+Particle Network natively supports and facilitates the end-to-end utilization of ERC-4337 account abstraction. This is primarily done through the account abstraction SDK, which can construct, sponsor, and send UserOperations, deploy smart accounts, retrieve fee quotes, and perform other key functions.
 
-> On testnet, every gasless transaction is sponsored automatically. On mainnet you'll need to deposit USDT in the Paymaster.
+> Every gasless transaction is automatically sponsored on testnet. On mainnet, you'll need to deposit USDT in the Paymaster.
 
 👉 Learn more about the [Particle AA SDK](https://developers.particle.network/docs/aa-web-quickstart).
 
@@ -53,20 +53,20 @@ Particle Network natively supports and facilitates end-to-end utilization of ERC
 ## Deploy with Vercel
 
 <p align="center">
-<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsoos3d%2Fparticle-next-starter%2Ftree%2Fmain%2Fparticle-next-starter&env=NEXT_PUBLIC_PROJECT_ID,NEXT_PUBLIC_CLIENT_KEY,NEXT_PUBLIC_APP_ID"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
+<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsoos3d%2Fparticle-auth-nextjs-aa%2Ftree%2Fmain%2Fparticle-auth-aa&env=NEXT_PUBLIC_PROJECT_ID,NEXT_PUBLIC_CLIENT_KEY,NEXT_PUBLIC_APP_ID"><img src="https://vercel.com/button" alt="Deploy with Vercel"/></a>
 </p>
 
 ## 🛠️ Quickstart
 
 ### Clone this repository
 ```
-git clone https://github.com/soos3d/particle-auth-nextjs-ethers.git
+git clone https://github.com/soos3d/particle-auth-nextjs-aa
 ```
 
 ### Move into the app directory
 
 ```sh
-cd particle-next-starter
+cd particle-auth-aa
 ```
 
 ### Install dependencies
@@ -125,7 +125,7 @@ List of available social logins:
 
 ### AA options
 
-You can configure the smart account using the `aaOptions` object.
+You can configure the smart account using the `aaOptions` object in `src/app/page.tsx`.
 
 - **BICONOMY**, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
   - `version`, either `1.0.0` or `2.0.0`; both versions of Biconomy's smart account implementation are supported.
@@ -155,4 +155,3 @@ You can configure the smart account using the `aaOptions` object.
     },
   });
   ```
-  
