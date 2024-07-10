@@ -102,6 +102,8 @@ yarn dev
 
 Particle Auth config is in `src/app/layout.tsx`. 
 
+### Config social logins
+
 List of available social logins:
 
 ```sh
@@ -120,3 +122,37 @@ List of available social logins:
   jwt: 'jwt'
 }
 ```
+
+### AA options
+
+You can configure the smart account using the `aaOptions` object.
+
+- **BICONOMY**, a [Biconomy smart account](https://www.biconomy.io/smart-accounts).
+  - `version`, either `1.0.0` or `2.0.0`; both versions of Biconomy's smart account implementation are supported.
+  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+- **CYBERCONNECT**, a [CyberConnect smart account](https://wallet.cyber.co/).
+  - `version`, currently only `1.0.0` is supported for `CYBERCONNECT`.
+  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+- **SIMPLE**, a [SimpleAccount implementation](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol).
+  - `version`, currently only `1.0.0` is supported for `SIMPLE`.
+  - `chainIds`, an array of chain IDs in which the smart account is expected to be used.
+
+```ts
+  // Set up and configure the smart account
+  const smartAccount = new SmartAccount(provider, {
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
+    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY || "",
+    appId: process.env.NEXT_PUBLIC_APP_ID || "",
+    aaOptions: {
+      accountContracts: {
+        SIMPLE: [
+          {
+            version: "1.0.0", // SIMPLE only allows 1.0.0
+            chainIds: [EthereumSepolia.id, BaseSepolia.id],
+          },
+        ],
+      },
+    },
+  });
+  ```
+  
