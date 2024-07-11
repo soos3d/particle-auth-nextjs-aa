@@ -14,7 +14,7 @@ import {
   SmartAccount,
 } from "@particle-network/aa";
 import { BaseSepolia, EthereumSepolia } from "@particle-network/chains";
-import { ethers } from "ethers";
+import { ethers, type Eip1193Provider } from "ethers";
 
 // UI component to display links to the Particle sites
 import LinksGrid from "./components/Links";
@@ -22,25 +22,6 @@ import Header from "./components/Header";
 
 // Import the utility functions
 import { formatBalance, truncateAddress } from "./utils/utils";
-
-// Create a wrapper to adapt AAWrapProvider to Eip1193Provider
-class Eip1193ProviderWrapper {
-  private provider: AAWrapProvider;
-
-  constructor(provider: AAWrapProvider) {
-    this.provider = provider;
-  }
-
-  async request(request: {
-    method: string;
-    params?: any[] | Record<string, any>;
-  }) {
-    return this.provider.request({
-      method: request.method,
-      params: Array.isArray(request.params) ? request.params : [request.params],
-    });
-  }
-}
 
 const Home: NextPage = () => {
   // Hooks to manage logins, data display, and transactions
@@ -78,7 +59,7 @@ const Home: NextPage = () => {
   // Function to create ethers provider based on selected mode
   const createEthersProvider = (mode: SendTransactionMode) => {
     return new ethers.BrowserProvider(
-      new Eip1193ProviderWrapper(new AAWrapProvider(smartAccount, mode)),
+      new AAWrapProvider(smartAccount, mode) as Eip1193Provider,
       "any"
     );
   };
