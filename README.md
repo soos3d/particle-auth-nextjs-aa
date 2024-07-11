@@ -154,4 +154,6 @@ You can configure the smart account using the `aaOptions` object in `src/app/pag
       },
     },
   });
+
+  smartAccount.setSmartAccountContract({ name: "SIMPLE", version: "1.0.0" });
   ```
