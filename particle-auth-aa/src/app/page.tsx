@@ -33,12 +33,14 @@ const Home: NextPage = () => {
   const [balance, setBalance] = useState<string>(""); // states for fetching and display the balance
   const [recipientAddress, setRecipientAddress] = useState<string>(""); // states to get the address to send tokens to from the UI
   const [selectedProvider, setSelectedProvider] = useState<string>("ethers"); // states to handle which providers signs the message
-  const [selectedMode, setSelectedMode] = useState<SendTransactionMode>(
-    SendTransactionMode.Gasless
-  ); // state to handle the selected transaction mode. Gasless by default
   const [address, setAddress] = useState<string>(""); // states to handle the address of the smart account
   const [transactionHash, setTransactionHash] = useState<string | null>(null); // states for the transaction hash
   const [isSending, setIsSending] = useState<boolean>(false); // state to display 'Sending...' while waiting for a hash
+
+  // state to handle the selected transaction mode. Gasless by default
+  const [selectedMode, setSelectedMode] = useState<SendTransactionMode>(
+    SendTransactionMode.Gasless
+  );
 
   // Set up and configure the smart account
   const smartAccount = new SmartAccount(provider, {
@@ -180,6 +182,9 @@ const Home: NextPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-between p-8 bg-black text-white">
       <Header />
+      {/*
+            UI starts with a condition. If userInfo is undefined, the user is not logged in so the connect button is displayed.
+      */}
       <main className="flex-grow flex flex-col items-center justify-center w-full max-w-6xl mx-auto">
         {!userInfo ? (
           <div className="login-section">
@@ -192,6 +197,10 @@ const Home: NextPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+            {/*
+            In this card we display info from Particle Auth
+            This area shocases how to fetch various kind of data from Particle Auth directly.
+              */}
             <div className="border border-purple-500 p-6 rounded-lg">
               <h2 className="text-2xl font-bold mb-2 text-white">
                 Accounts info
@@ -230,6 +239,10 @@ const Home: NextPage = () => {
               </div>
             </div>
             <div className="border border-purple-500 p-6 rounded-lg">
+              {/*
+            The card to send a transaction
+            Good showcase on how to use states to let the user decide how to pay for gas and display more information.
+              */}
               <h2 className="text-2xl font-bold mb-2 text-white">
                 Send a transaction
               </h2>
@@ -273,6 +286,9 @@ const Home: NextPage = () => {
               )}
             </div>
             <div className="border border-purple-500 p-6 rounded-lg">
+              {/*
+            The card where the user can sign a message
+              */}
               <h2 className="text-2xl font-bold mb-2">Sign a Message</h2>
               <p className="text-lf">Pick a provider to sign with:</p>
               <select
