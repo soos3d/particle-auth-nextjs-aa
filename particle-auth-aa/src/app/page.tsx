@@ -19,6 +19,7 @@ import { ethers, type Eip1193Provider } from "ethers";
 // UI component to display links to the Particle sites
 import LinksGrid from "./components/Links";
 import Header from "./components/Header";
+import TxNotification from "./components/TxNotification";
 
 // Import the utility functions
 import { formatBalance, truncateAddress } from "./utils/utils";
@@ -36,6 +37,8 @@ const Home: NextPage = () => {
     SendTransactionMode.Gasless
   ); // state to handle the selected transaction mode. Gasless by default
   const [address, setAddress] = useState<string>(""); // states to handle the address of the smart account
+  const [transactionHash, setTransactionHash] = useState<string | null>(null); // states for the transaction hash
+  const [isSending, setIsSending] = useState<boolean>(false); // state to display 'Sending...' while waiting for a hash
 
   // Set up and configure the smart account
   const smartAccount = new SmartAccount(provider, {
@@ -118,6 +121,7 @@ const Home: NextPage = () => {
   // Execute an Ethereum transaction
   // Simple transfer in this example
   const executeTxEvm = async () => {
+    setIsSending(true);
     const signer = await ethersProvider.getSigner();
     const tx = {
       to: recipientAddress,
@@ -129,12 +133,14 @@ const Home: NextPage = () => {
       const txResponse = await signer.sendTransaction(tx);
       const txReceipt = await txResponse.wait();
       if (txReceipt) {
-        alert(`Transaction Successful. Transaction Hash: ${txReceipt.hash}`);
+        setTransactionHash(txReceipt.hash);
       } else {
         console.error("Transaction receipt is null");
       }
     } catch (error) {
       console.error("Error executing EVM transaction:", error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -255,10 +261,16 @@ const Home: NextPage = () => {
               <button
                 className="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
                 onClick={executeTxEvm}
-                disabled={!recipientAddress}
+                disabled={!recipientAddress || isSending}
               >
-                Send 0.01 ETH
+                {isSending ? "Sending..." : "Send 0.01 ETH"}
               </button>
+              {transactionHash && (
+                <TxNotification
+                  hash={transactionHash}
+                  blockExplorerUrl={chainInfo.blockExplorerUrl}
+                />
+              )}
             </div>
             <div className="border border-purple-500 p-6 rounded-lg">
               <h2 className="text-2xl font-bold mb-2">Sign a Message</h2>
