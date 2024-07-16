@@ -44,9 +44,9 @@ const Home: NextPage = () => {
 
   // Set up and configure the smart account
   const smartAccount = new SmartAccount(provider, {
-    projectId: process.env.NEXT_PUBLIC_PROJECT_ID || "",
-    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY || "",
-    appId: process.env.NEXT_PUBLIC_APP_ID || "",
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
+    clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY!,
+    appId: process.env.NEXT_PUBLIC_APP_ID!,
     aaOptions: {
       accountContracts: {
         SIMPLE: [
