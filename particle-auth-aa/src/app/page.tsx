@@ -59,9 +59,11 @@ const Home: NextPage = () => {
     },
   });
 
-  smartAccount.setSmartAccountContract({ name: "SIMPLE", version: "1.0.0" });
+  // Use this syntax to upadate the smartAccount if you define more that one smart account provider in accountContracts
+  //smartAccount.setSmartAccountContract({ name: "SIMPLE", version: "1.0.0" });
 
-  // Function to create ethers provider based on selected mode
+  // Function to create ethers provider based on selected mode. This is for ethers V6
+  // use new ethers.providers.Web3Provider(new AAWrapProvider(smartAccount, mode), "any"); for Ethers V5
   const createEthersProvider = (mode: SendTransactionMode) => {
     return new ethers.BrowserProvider(
       new AAWrapProvider(smartAccount, mode) as Eip1193Provider,
@@ -92,7 +94,7 @@ const Home: NextPage = () => {
       // Get the smart account address
       const address = await smartAccount.getAddress();
       const balanceResponse = await ethersProvider.getBalance(address);
-      const balanceInEther = ethers.formatEther(balanceResponse);
+      const balanceInEther = ethers.formatEther(balanceResponse); // ethers V5 will need the utils module for those convertion operations
 
       // Format the balance using the utility function
       const fixedBalance = formatBalance(balanceInEther);
@@ -128,7 +130,7 @@ const Home: NextPage = () => {
     const tx = {
       to: recipientAddress,
       value: ethers.parseEther("0.01"),
-      data: "0x",
+      data: "0x", // data is needed only when interacting with smart contracts. 0x equals to zero and it's here for demonstration only
     };
 
     try {
@@ -205,15 +207,22 @@ const Home: NextPage = () => {
               <h2 className="text-2xl font-bold mb-2 text-white">
                 Accounts info
               </h2>
-              <h2 className="text-lg font-semibold mb-2 text-white">
-                Name: {userInfo.name}
-              </h2>
+              <div className="flex items-center">
+                <h2 className="text-lg font-semibold mb-2 text-white mr-2">
+                  Name: {userInfo.name}
+                </h2>
+                <img
+                  src={userInfo.avatar}
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full"
+                />
+              </div>
               <h2 className="text-lg font-semibold mb-2 text-white">
                 Status: {connectionStatus}
               </h2>
 
               <h2 className="text-lg font-semibold mb-2 text-white">
-                Address: <code>{truncateAddress(address || "")}</code>
+                Address: <code>{truncateAddress(address)}</code>
               </h2>
               <h3 className="text-lg mb-2 text-gray-400">
                 Chain: {chainInfo.fullname}
@@ -266,9 +275,6 @@ const Home: NextPage = () => {
                 <option value={SendTransactionMode.Gasless}>Gasless</option>
                 <option value={SendTransactionMode.UserPaidNative}>
                   User Paid Native
-                </option>
-                <option value={SendTransactionMode.UserSelect}>
-                  User Select
                 </option>
               </select>
               <button
